@@ -1,0 +1,10 @@
+Version 1.0 can records the directed graph and find the length of the shortest paths between any two vertices using SPFA.
+
+Going to add in version 1.1:
+1. the destruction of the DirectedGraph
+2. a optimization of SPFA (Small Label First)
+
+Plan to do:
+1. Tarjan algorithm to find the Strongly Connected Components of the graph
+2. a method to reconstructe the graph for doing algorithms about Network Flow
+3. Adjust algorithms in order to be able to check the negative cycle.
