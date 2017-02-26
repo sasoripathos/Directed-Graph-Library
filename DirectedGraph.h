@@ -3,7 +3,7 @@
  *	Purpose: Record a directed graph and provide methods to find and print out
  *			 some properties of the directed graph.
  *	@author Zhili (Jerry) Pan -- sasoripan
- *	@version 1.0 01/20/17
+ *	@version 1.1 02/26/17
  */
 #include<iostream>
 #include<cstdio>
@@ -51,6 +51,13 @@ class DirectedGraph{
 			// Initialize the array to mark the end of a list
 			for(int i=0; i<n+SAFE_LIST; i++) head[i] = -1;
 			}
+		/** Distructor
+		 *	Release the memory assigned to graph and head.
+		 */
+		~DirectedGraph(){
+			delete[] graph;
+			delete[] head;
+			} 
 		/** Add one edge into the current graph
 		 *	@param start the starting vertice of a edge
 		 *	@param end the ending vertice of a edge
@@ -84,17 +91,21 @@ template<class TYPE> TYPE DirectedGraph<TYPE>::shortestPath(int source, int dest
 	memset(inque,0,sizeof(inque));
 	dis[source] = 0; q[t] = source; inque[source]=true;
 	while(t!=w){
-		fr = q[t]; inque[fr] = false;
+		fr = q[t]; inque[fr] = false; t=(t+1)%nodeNumber;
 		for(i=head[fr]; i!=-1; i=graph[i].next){
 			nx = graph[i].to;
 			if(graph[i].value + dis[fr] < dis[nx]){
 				dis[nx] = graph[i].value + dis[fr];
 				if(!inque[nx]){
-					q[w]=nx; inque[nx]=true; w=(w+1)%nodeNumber;
+					if((t!=w) && (dis[nx] < dis[q[t]])){
+						t=(t+nodeNumber-1)%nodeNumber; q[t]=nx; inque[nx]=true;
+						}
+					else{
+						q[w]=nx; inque[nx]=true; w=(w+1)%nodeNumber;
+						}
 					}
 				}
 			}
-		t=(t+1)%nodeNumber;
 		}
 	ans = dis[destination];
 	delete[] dis;
